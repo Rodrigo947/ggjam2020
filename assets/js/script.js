@@ -25,11 +25,25 @@ function createAps(quant){
     var aps = [];
     for(var i=0;i<quant;i++){
         var ap = {
-            x: randomNumber(0,500),
-            y: randomNumber(0,500),
-            raio: randomNumber(20,50),
-            color: randomNumber(0,colors.length)
+            x: randomNumber(50,450),
+            y: randomNumber(50,450),
+            raio: randomNumber(50,100),
+            color: 0,
+            xPlus: -10,
+            yPlus: -30,
+            xMinus: -10,
+            yMinus: 15,
+            xText: -8,
+            yText: 14
         };
+        for(var j=0;j<aps.length;j++){
+            if( dist(ap.x,ap.y,aps[j].x,aps[j].y) < 80 ){
+                ap.x = randomNumber(50,450);
+                ap.y = randomNumber(50,450);
+                j=-1;
+            }
+        }
+
         aps.push(ap);
     }
     
@@ -67,12 +81,9 @@ function drawAps(aps){
     });
 }
 
-function insideCircle(Xp,Yp,Xc,Yc,raio){
-    var d = Math.sqrt( Math.pow(Xp - Xc,2) + Math.pow(Yp - Yc,2) );
-    if(d>raio)
-        return false;
-    else 
-        return true;
+function dist(X1,Y1,X2,Y2){
+    var d = Math.sqrt( Math.pow(X1 - X2,2) + Math.pow(Y1 - Y2,2) );
+    return d;
 }
 
 function insideRect(x,y,clientX,clientY){
@@ -85,33 +96,7 @@ function insideRect(x,y,clientX,clientY){
 
 /*Main Code*/ 
 requestAnimationFrame(passo);
-var ap = {
-    x: 200,
-    y: 200,
-    raio: 50,
-    color: randomNumber(0,colors.length),
-    xPlus: -10,
-    yPlus: -30,
-    xMinus: -10,
-    yMinus: 15,
-    xText: -8,
-    yText: 14
-};
-
-var ap2 = {
-    x: 150,
-    y: 200,
-    raio: 50,
-    color: randomNumber(0,colors.length),
-    xPlus: -10,
-    yPlus: -30,
-    xMinus: -10,
-    yMinus: 15,
-    xText: -8,
-    yText: 14
-};
-
-var aps = [ap,ap2];
+var aps = createAps(3);
 function passo(t){
     dt = (t - t0)/1000;
     ctx.clearRect(0,0,canvas.width,canvas.height);
